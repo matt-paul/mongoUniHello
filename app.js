@@ -1,16 +1,24 @@
-var express = require('express'),
-    cons = require('consolidate'),
-    mongodb = require('mongodb');
+var MongoClient = require('mongodb').MongoClient,
+// The assert module is used for error checking
+    assert = require('assert');
 
+// The Mongo db client object is used to connect to the mongo server
+MongoClient.connect('mongodb://localhosst:27017/video', function(err, db) {
 
+    assert.equal(null, err);
+    console.log("Successfully connected to the server");
 
-// var http = require('http');
+      //Find some documents in our collection. find returns a 'cursor' so it has
+      //to be converted to an array
+    db.collection('movies').find({}).toArray(function(err, docs) {
 
-// var server = http.createServer(function (request, response) {
-//   response.writeHead(200, {"Content-Type": "text/plain"});
-//   response.end("Hello, World");
-// });
+        // Print the title of each document in the result set
+      docs.forEach(function(doc) {
+        console.log(doc.title);
+      });
 
-// server.listen(8000);
+      db.close();
+  });
 
-// console.log("Server running on localhost 8000");
+  console.log("Stuff here")
+});
